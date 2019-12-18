@@ -7,7 +7,7 @@ pip install poetry
 poetry config settings.virtualenvs.create false
 poetry install
 poetry shell
-flask run
+uvicorn app.main:app --reload
 ```
 
 ## docker 실행
