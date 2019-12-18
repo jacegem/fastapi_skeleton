@@ -1,10 +1,10 @@
 import uvicorn
-from fastapi import Depends, FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
 
-from depends.header import token
-from routers import items, users
+from app.routers import users
+from app.routers import items
 
 app = FastAPI()
 

@@ -1,1 +1,3 @@
 # ranker-fastapi
+
+# fastapi-skeleton
