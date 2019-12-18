@@ -31,6 +31,11 @@ async def get_token_header(x_token: str = Header(...)):
     # kwargs['greeting'] = 'hello'
 
 
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
 app.include_router(users.router)
 app.include_router(
     items.router,
