@@ -15,4 +15,4 @@ flask run
 ```shell
 chmod u+x docker-run.sh
 ./docker-run.sh
-```
+```# fastapi-skeleton
