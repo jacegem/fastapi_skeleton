@@ -3,21 +3,31 @@ from fastapi import FastAPI, Header, HTTPException
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.cors import CORSMiddleware
 
+from app.core.config import PROJECT_NAME, ALLOWED_HOSTS, API_V1_STR
+from app.db.mongodb_util import connect_to_mongo, close_mongo_connection
 from app.routers import users
 from app.routers import items
 
-app = FastAPI()
+from app.api.v1.api import router as api_router
 
-origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http:localhost",
-    "http:localhost:8080",
-]
+app = FastAPI(title=PROJECT_NAME)
+
+app.add_event_handler("startup", connect_to_mongo)
+app.add_event_handler("shutdown", close_mongo_connection)
+
+# origins = [
+#     "http://localhost.tiangolo.com",
+#     "https://localhost.tiangolo.com",
+#     "http:localhost",
+#     "http:localhost:8080",
+# ]
+
+if not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=ALLOWED_HOSTS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,6 +45,8 @@ async def get_token_header(x_token: str = Header(...)):
 def read_root():
     return {"Hello": "World"}
 
+
+app.include_router(api_router, prefix=API_V1_STR)
 
 app.include_router(users.router)
 app.include_router(

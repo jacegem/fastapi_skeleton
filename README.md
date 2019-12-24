@@ -17,4 +17,10 @@ chmod u+x docker-run.sh
 ./docker-run.sh
 ```
 
+## 출처
+
+- https://fastapi.tiangolo.com/tutorial/first-steps/
+- https://github.com/tiangolo/full-stack-fastapi-couchbase/
+- https://github.com/tiangolo/full-stack-fastapi-postgresql
+- https://github.com/markqiu/fastapi-mongodb-realworld-example-app/
 

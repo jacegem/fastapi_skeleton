@@ -1,10 +1,17 @@
 from fastapi import APIRouter
 
+
 router = APIRouter()
 
 
 @router.get("/users/", tags=["users"])
 async def read_users():
+    print('in users')
+
+    db = main.client['test-database']
+    collection = db.test_collection
+    print(collection)
+
     return [{"username": "Foo"}, {"username": "Bar"}]
 
 
