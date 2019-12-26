@@ -48,15 +48,15 @@ def read_root():
 
 app.include_router(api_router, prefix=API_V1_STR)
 
-app.include_router(users.router)
-app.include_router(
-    items.router,
-    prefix="/items",
-    tags=["items"],
-    # dependencies=[Depends(get_token_header),
-    #               Depends(token)],
-    responses={404: {"description": "Not found"}},
-)
+# app.include_router(users.router)
+# app.include_router(
+#     items.router,
+#     prefix="/items",
+#     tags=["items"],
+#     # dependencies=[Depends(get_token_header),
+#     #               Depends(token)],
+#     responses={404: {"description": "Not found"}},
+# )
 
 
 def custom_openapi():

@@ -1,7 +1,9 @@
 from pydantic import BaseModel, EmailStr, UrlStr
 from typing import Optional
 
+from app.core.security import verify_password, generate_salt, get_password_hash
 from app.model.dbmodel import DBModelMixin
+from app.model.rwmodel import RWModel
 
 
 class UserBase(BaseModel):
@@ -13,6 +15,19 @@ class UserBase(BaseModel):
 
 class User(UserBase):
     token: str
+
+
+class UserInLogin(RWModel):
+    email: EmailStr
+    password: str
+
+
+class UserInCreate(UserInLogin):
+    username: str
+
+
+class UserInResponse(RWModel):
+    user: User
 
 
 class UserInDB(DBModelMixin, UserBase):

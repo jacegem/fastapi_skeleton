@@ -1,6 +1,10 @@
+from datetime import datetime, timedelta
 from typing import Optional
 
+import jwt
 from fastapi import Depends, HTTPException, Header
+from jwt import PyJWTError
+
 from motor.motor_asyncio import AsyncIOMotorClient
 from starlette.status import HTTP_403_FORBIDDEN, HTTP_404_NOT_FOUND
 
@@ -9,8 +13,6 @@ from app.crud.user import get_user
 from app.db.mongodb import get_database
 from app.model.token import TokenPayload
 from app.model.user import User
-
-import jwt
 
 ALGORITHM = "HS256"
 access_token_jwt_subject = "access"
@@ -66,3 +68,15 @@ def get_current_user_authorizer(*, required: bool = True):
         return _get_current_user
     else:
         return _get_current_user_optional
+
+
+def create_access_token(*, data: dict, expires_delta: Optional[timedelta] = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=15)
+
+    to_encode.update({"exp": expire, "sub": access_token_jwt_subject})
+    encoded_jwt = jwt.encode(to_encode, str(SECRET_KEY), algorithm=ALGORITHM)
+    return encoded_jwt

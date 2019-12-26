@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Query, Depends
+from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
+from starlette.responses import JSONResponse
 
 from app.core.jwt import get_current_user_authorizer
 from app.core.util import create_aliased_response
@@ -9,6 +11,11 @@ from app.model.article import ManyArticlesInResponse, ArticleFilterParams
 from app.model.user import User
 
 router = APIRouter()
+
+
+@router.get("/article")
+async def get_article():
+    return JSONResponse(content=jsonable_encoder({"msg": "article"}))
 
 
 @router.get("/articles", response_model=ManyArticlesInResponse, tags=["articles"])
