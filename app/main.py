@@ -8,6 +8,9 @@ from app.db.mongodb_util import connect_to_mongo, close_mongo_connection
 from app.routers import users
 from app.routers import items
 
+import sentry_sdk
+from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
+
 from app.api.v1.api import router as api_router
 
 app = FastAPI(title=PROJECT_NAME)
@@ -46,7 +49,14 @@ def read_root():
     return {"Hello": "World"}
 
 
+@app.get("/device")
+def read_root():
+    a = 1 / 0
+    return {"Hello": "World"}
+
+
 app.include_router(api_router, prefix=API_V1_STR)
+
 
 # app.include_router(users.router)
 # app.include_router(
@@ -76,6 +86,10 @@ def custom_openapi():
 
 
 app.openapi = custom_openapi
+
+dsn = "https://8e4d36e41faf4dbc92cb8509fb6b1b8b@sentry.io/1882082"
+sentry_sdk.init(dsn=dsn)
+app = SentryAsgiMiddleware(app)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080, reload=True)

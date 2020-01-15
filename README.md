@@ -1,5 +1,13 @@
 # fastapi-skeleton
 
+## 
+
+```py
+PYTHONPATH='.' python app/scheduler/collect.py
+```
+ 
+
+
 ## 로컬 실행
 
 ```shell
